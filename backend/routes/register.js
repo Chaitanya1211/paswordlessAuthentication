@@ -9,7 +9,7 @@ route.post("/check", async (req, res) => {
     const response = await User.findOne({ username: username });
 
     if (response) {
-      return res.status(422).json({ message: " user exists" });
+      return res.status(200).json({ message: "user exists" });
     } else {
       return res.status(200).json({ message: " user does not exists" });
     }

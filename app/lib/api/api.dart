@@ -15,7 +15,7 @@ class Api {
   }
 
   _performRequest(String reqType, String endUrl, Map getapidata) async {
-    var baseUrl = "http://localhost:3000/";
+    var baseUrl = "http://3.110.81.170/";
 
     var headers = {'Content-Type': 'application/json'};
 
