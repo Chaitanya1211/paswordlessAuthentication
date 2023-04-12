@@ -61,14 +61,21 @@ class _RegisterState extends State<Register> {
                         keys = key.generateRSAKeyPair(2048);
                         var publicKey = keys[0];
                         var privateKey = keys[1];
-                        //store private key in local
-                        // getInstance();
                         shared.setPrivateKey(privateKey);
-                        // String res = await shared.getPrivateKey();
-                        // print("Private key is :" + res);
                         var registerResponse = await apiCall.registerUser(
                             _username.text.trim(), publicKey);
-
+                        if (registerResponse["message"] ==
+                            "User Registered Successfully") {
+                          alert.showMyDialog(
+                              context,
+                              "User Registration Successfull",
+                              "You have registered successfully.");
+                        } else {
+                          alert.showMyDialog(
+                              context,
+                              "User Registration Unsuccessfull",
+                              "Registration unsuccessfull. Please try again later");
+                        }
                         print(registerResponse);
                       }
                     },

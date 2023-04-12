@@ -17,7 +17,7 @@ class Api {
     getapidata['publicKey'] = publicKey;
     var registerResult =
         await _performRequest('POST', 'register/new', getapidata);
-    print(registerResult);
+    // print(registerResult);
     return registerResult;
   }
 
