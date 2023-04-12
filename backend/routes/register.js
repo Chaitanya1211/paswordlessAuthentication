@@ -11,7 +11,7 @@ route.post("/check", async (req, res) => {
     if (response) {
       return res.status(200).json({ message: "user exists" });
     } else {
-      return res.status(200).json({ message: " user does not exists" });
+      return res.status(200).json({ message: "user does not exists" });
     }
   } catch (err) {
     res.send(err);
@@ -25,12 +25,12 @@ route.post("/new", async (req, res) => {
   const newUser = user.save();
 
   if (newUser) {
-    res.status(201).json({
+    res.status(200).json({
       message: "User Registered Successfully",
       publicKey: publicKey,
     });
   } else {
-    res.status(500).json({ message: "Failed" });
+    res.status(200).json({ message: "Failed" });
   }
 });
 module.exports = route;

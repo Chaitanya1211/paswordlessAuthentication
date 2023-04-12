@@ -6,16 +6,23 @@ class Api {
   checkAvailability(String username) async {
     Map getapidata = {};
     getapidata['username'] = username;
-    // getapidata['publicKey'];
-    print("register called");
     var registerData =
         await _performRequest('POST', 'register/check', getapidata);
-    print(registerData);
-    return registerData;
+    return registerData["message"];
+  }
+
+  registerUser(String username, String publicKey) async {
+    Map getapidata = {};
+    getapidata['username'] = username;
+    getapidata['publicKey'] = publicKey;
+    var registerResult =
+        await _performRequest('POST', 'register/new', getapidata);
+    print(registerResult);
+    return registerResult;
   }
 
   _performRequest(String reqType, String endUrl, Map getapidata) async {
-    var baseUrl = "http://3.110.81.170/";
+    var baseUrl = "http://43.205.196.217/";
 
     var headers = {'Content-Type': 'application/json'};
 
