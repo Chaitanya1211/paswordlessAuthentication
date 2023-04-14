@@ -62,6 +62,7 @@ class _RegisterState extends State<Register> {
                         var publicKey = keys[0];
                         var privateKey = keys[1];
                         shared.setPrivateKey(privateKey);
+                        shared.setPublicKey(publicKey);
                         var registerResponse = await apiCall.registerUser(
                             _username.text.trim(), publicKey);
                         if (registerResponse["message"] ==

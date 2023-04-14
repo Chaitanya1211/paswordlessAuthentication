@@ -21,8 +21,15 @@ class Api {
     return registerResult;
   }
 
+  getSecret(String username) async {
+    Map getapidata = {};
+    getapidata['username'] = username;
+    var secretResult = await _performRequest('GET', 'login/secret', getapidata);
+    return secretResult;
+  }
+
   _performRequest(String reqType, String endUrl, Map getapidata) async {
-    var baseUrl = "http://43.205.196.217/";
+    var baseUrl = "http://65.0.74.137/";
 
     var headers = {'Content-Type': 'application/json'};
 
