@@ -29,6 +29,6 @@ route.get("/verify", (req, res) => {
     secret
   );
 
-  res.json({ decrypted: decryptedString });
+  res.status(200).json({ decrypted: decryptedString.toString() });
 });
 module.exports = route;

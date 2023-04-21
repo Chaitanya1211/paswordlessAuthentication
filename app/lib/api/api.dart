@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:app/helper/sharedPrefs.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
+  SharedPrefs shared = SharedPrefs();
+
   checkAvailability(String username) async {
     Map getapidata = {};
     getapidata['username'] = username;
@@ -26,6 +29,16 @@ class Api {
     getapidata['username'] = username;
     var secretResult = await _performRequest('GET', 'login/secret', getapidata);
     return secretResult;
+  }
+
+  verifySecret(String username) async {
+    Map getapidata = {};
+    final String privateKey = await shared.getPrivateKey();
+    getapidata['username'] = username;
+    getapidata['privateKey'] = privateKey;
+
+    var res = await _performRequest('GET', '/login/verify', getapidata);
+    return res["decrypted"];
   }
 
   _performRequest(String reqType, String endUrl, Map getapidata) async {

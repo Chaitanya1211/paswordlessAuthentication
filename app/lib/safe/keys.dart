@@ -44,44 +44,44 @@ class Keys {
     return [publicKey, privateKey];
   }
 
-  Future<dynamic> decryptSecret(String secret) async {
-    String private = await shared.getPrivateKey();
-    String public = await shared.getPublicKey();
-    // RSAPrivateKey priv = RsaKeyHelper().parsePrivateKeyFromPem(private);
-    // print("Public key : $public");
-    // print("Private key : $private");
-    try {
-      RSAPublicKey public_key = RsaKeyHelper().parsePublicKeyFromPem(public);
-      RSAPrivateKey private_key =
-          RsaKeyHelper().parsePrivateKeyFromPem(private);
-      final plainText = secret;
-      final encrypter =
-          Encrypter(RSA(publicKey: public_key, privateKey: private_key));
+  // Future<dynamic> decryptSecret(String secret) async {
+  //   String private = await shared.getPrivateKey();
+  //   String public = await shared.getPublicKey();
+  //   // RSAPrivateKey priv = RsaKeyHelper().parsePrivateKeyFromPem(private);
+  //   // print("Public key : $public");
+  //   // print("Private key : $private");
+  //   try {
+  //     RSAPublicKey public_key = RsaKeyHelper().parsePublicKeyFromPem(public);
+  //     RSAPrivateKey private_key =
+  //         RsaKeyHelper().parsePrivateKeyFromPem(private);
+  //     final plainText = secret;
+  //     final encrypter =
+  //         Encrypter(RSA(publicKey: public_key, privateKey: private_key));
 
-      final encrypted = encrypter.encrypt(plainText);
-      final decrypted = encrypter.decrypt(encrypted);
+  //     final encrypted = encrypter.encrypt(plainText);
+  //     final decrypted = encrypter.decrypt(encrypted);
 
-      print(
-          decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-      print(encrypted.base64);
+  //     print(
+  //         decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  //     print(encrypted.base64);
 
-      return decrypted;
-    } catch (err) {
-      print("Error caught : " + err.toString());
-    }
-    // var decrypted = decrypt(secret, priv);
-    // RSAPublicKey public_key = RsaKeyHelper().parsePublicKeyFromPem(public);
-    // RSAPrivateKey private_key = RsaKeyHelper().parsePrivateKeyFromPem(private);
-    // final plainText = secret;
-    // final encrypter =
-    //     Encrypter(RSA(publicKey: public_key, privateKey: private_key));
+  //     return decrypted;
+  //   } catch (err) {
+  //     print("Error caught : " + err.toString());
+  //   }
+  //   // var decrypted = decrypt(secret, priv);
+  //   // RSAPublicKey public_key = RsaKeyHelper().parsePublicKeyFromPem(public);
+  //   // RSAPrivateKey private_key = RsaKeyHelper().parsePrivateKeyFromPem(private);
+  //   // final plainText = secret;
+  //   // final encrypter =
+  //   //     Encrypter(RSA(publicKey: public_key, privateKey: private_key));
 
-    // final encrypted = encrypter.encrypt(plainText);
-    // final decrypted = encrypter.decrypt(encrypted);
+  //   // final encrypted = encrypter.encrypt(plainText);
+  //   // final decrypted = encrypter.decrypt(encrypted);
 
-    // print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    // print(encrypted.base64);
+  //   // print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  //   // print(encrypted.base64);
 
-    // return decrypted;
-  }
+  //   // return decrypted;
+  // }
 }
