@@ -29,7 +29,7 @@ class Api {
   }
 
   _performRequest(String reqType, String endUrl, Map getapidata) async {
-    var baseUrl = "http://65.0.74.137/";
+    var baseUrl = "http://3.108.66.1/";
 
     var headers = {'Content-Type': 'application/json'};
 

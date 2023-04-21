@@ -5,7 +5,9 @@ import 'package:pointycastle/key_generators/rsa_key_generator.dart';
 import 'package:pointycastle/random/fortuna_random.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 // import 'package:pointycastle/api.dart' as crypto;
-
+import 'dart:io';
+import 'package:encrypt/encrypt.dart';
+import 'package:pointycastle/asymmetric/api.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'dart:typed_data';
 
@@ -45,13 +47,41 @@ class Keys {
   Future<dynamic> decryptSecret(String secret) async {
     String private = await shared.getPrivateKey();
     String public = await shared.getPublicKey();
-    RSAPrivateKey priv = RsaKeyHelper().parsePrivateKeyFromPem(private);
-    print("Public key : $public");
-    print("Private key : $private");
+    // RSAPrivateKey priv = RsaKeyHelper().parsePrivateKeyFromPem(private);
+    // print("Public key : $public");
+    // print("Private key : $private");
+    try {
+      RSAPublicKey public_key = RsaKeyHelper().parsePublicKeyFromPem(public);
+      RSAPrivateKey private_key =
+          RsaKeyHelper().parsePrivateKeyFromPem(private);
+      final plainText = secret;
+      final encrypter =
+          Encrypter(RSA(publicKey: public_key, privateKey: private_key));
 
-    var decrypted = decrypt(
-        "WcbMd0wq9kRDCgPxgmJl3hOkYSkLAIWXUQQLaeNzwstpxPEy2YRXUGraALlpNTFIzRBYiQQGgs/Lpee+OqxDuw9ktVPNqWmUQosnpqQ0KjLHh+va9+oFZIbQlFb7m9CyQpsaKCZ1DC//GPh5t0WWvhDesfRZKAIE9fYRcj8dmNdvDuCMFXSEqJmjQMSzS/xfnshw9YDISHRP878OZNRRsKptk7eAQA/ciQxC/9rBQ1Xn+X2lKsPZcEAIr3Wky/cVDlw/2EPSzvZkCi8OtWomz8W8fssG1hjjaJVmdlZth6DVqcgzVUzEcETuxlj1ZsC33Dg0+DEp7/7PKefCu1h8fg==",
-        priv);
-    return public;
+      final encrypted = encrypter.encrypt(plainText);
+      final decrypted = encrypter.decrypt(encrypted);
+
+      print(
+          decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      print(encrypted.base64);
+
+      return decrypted;
+    } catch (err) {
+      print("Error caught : " + err.toString());
+    }
+    // var decrypted = decrypt(secret, priv);
+    // RSAPublicKey public_key = RsaKeyHelper().parsePublicKeyFromPem(public);
+    // RSAPrivateKey private_key = RsaKeyHelper().parsePrivateKeyFromPem(private);
+    // final plainText = secret;
+    // final encrypter =
+    //     Encrypter(RSA(publicKey: public_key, privateKey: private_key));
+
+    // final encrypted = encrypter.encrypt(plainText);
+    // final decrypted = encrypter.decrypt(encrypted);
+
+    // print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    // print(encrypted.base64);
+
+    // return decrypted;
   }
 }

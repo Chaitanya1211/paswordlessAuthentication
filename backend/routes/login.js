@@ -19,11 +19,16 @@ route.get("/secret", async (req, res) => {
 });
 
 route.get("/verify", (req, res) => {
-  const { secret } = req.body;
-  if (secret == process.env.SECRET_KEY) {
-    res.json({ message: "Login success" });
-  } else {
-    res.json({ message: "login fail" });
-  }
+  const { secret, privateKey } = req.body;
+  const decryptedString = crypto.privateDecrypt(
+    {
+      key: privateKey,
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: "sha256",
+    },
+    secret
+  );
+
+  res.json({ decrypted: decryptedString });
 });
 module.exports = route;
