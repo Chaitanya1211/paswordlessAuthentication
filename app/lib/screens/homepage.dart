@@ -57,13 +57,15 @@ class _HomepageState extends State<Homepage> {
                             child: const Text('Login'),
                             onPressed: () async {
                               //get secret from server
-                              final String uname = _username.text.toString();
+                              final String uname =
+                                  _username.text.toString().trim();
                               var secretResult = await api.getSecret(uname);
                               String secret = secretResult["encryptedData"];
                               print("Secret received : $secret");
                               //decrypt the secret
                               var res = await api.verifySecret(uname);
-                              print(res);
+                              String responseGot = res["decrypted"];
+                              print(responseGot);
                               //allow user login
                             },
                           )),

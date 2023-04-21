@@ -64,7 +64,7 @@ class _RegisterState extends State<Register> {
                         shared.setPrivateKey(privateKey);
                         shared.setPublicKey(publicKey);
                         var registerResponse = await apiCall.registerUser(
-                            _username.text.trim(), publicKey);
+                            _username.text.trim().toString(), publicKey);
                         if (registerResponse["message"] ==
                             "User Registered Successfully") {
                           alert.showMyDialog(

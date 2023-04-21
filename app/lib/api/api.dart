@@ -37,8 +37,9 @@ class Api {
     getapidata['username'] = username;
     getapidata['privateKey'] = privateKey;
 
-    var res = await _performRequest('GET', '/login/verify', getapidata);
-    return res["decrypted"];
+    var res = await _performRequest('GET', 'login/verify', getapidata);
+    print(res);
+    return res;
   }
 
   _performRequest(String reqType, String endUrl, Map getapidata) async {
@@ -55,10 +56,12 @@ class Api {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      print("Response recieved");
       var datafinal = await response.stream.bytesToString();
       var data = jsonDecode(datafinal);
       return data;
     }
+    print("Response not recieved");
     return {};
   }
 }
