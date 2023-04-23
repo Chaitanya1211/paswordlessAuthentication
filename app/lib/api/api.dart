@@ -31,9 +31,10 @@ class Api {
     return secretResult;
   }
 
-  verifySecret(String username) async {
+  verifySecret(String username, String privateKey) async {
+    print("Verify secret called");
     Map getapidata = {};
-    final String privateKey = await shared.getPrivateKey();
+
     getapidata['username'] = username;
     getapidata['privateKey'] = privateKey;
 

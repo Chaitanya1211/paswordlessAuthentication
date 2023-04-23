@@ -20,14 +20,14 @@ route.get("/secret", async (req, res) => {
 
 route.get("/verify", (req, res) => {
   const { secret, privateKey } = req.body;
-  const decryptedString = crypto.privateDecrypt(
-    {
-      key: privateKey,
-      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-      oaepHash: "sha256",
-    },
-    secret
-  );
+  // const decryptedString = crypto.privateDecrypt(
+  //   {
+  //     key: privateKey,
+  //     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+  //     oaepHash: "sha256",
+  //   },
+  //   secret
+  // );
 
   res.json({ decrypted: "HEllo" });
 });

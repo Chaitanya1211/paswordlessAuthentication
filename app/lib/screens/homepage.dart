@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/api/api.dart';
 import 'package:app/helper/sharedPrefs.dart';
 import 'package:app/screens/register.dart';
@@ -63,7 +65,13 @@ class _HomepageState extends State<Homepage> {
                               String secret = secretResult["encryptedData"];
                               print("Secret received : $secret");
                               //decrypt the secret
-                              var res = await api.verifySecret(uname);
+                              final String privateKey =
+                                  await shared.getPrivateKey();
+                              print("Private key : $privateKey");
+                              final file = File('private.txt');
+                              await file.writeAsString('Hello, world!');
+                              var res =
+                                  await api.verifySecret(uname, privateKey);
                               String responseGot = res["decrypted"];
                               print(responseGot);
                               //allow user login

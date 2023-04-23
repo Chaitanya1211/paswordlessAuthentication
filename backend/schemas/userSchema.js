@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     unique: true,
     required: true,
   },
-  publicKey: {
+  exportedPrivateKey: {
     type: String,
   },
 });

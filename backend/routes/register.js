@@ -19,15 +19,30 @@ route.post("/check", async (req, res) => {
 });
 
 route.post("/new", async (req, res) => {
-  const { username, publicKey } = req.body;
-  const user = new User({ username, publicKey });
+  const { username } = req.body;
+
+  const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+    // The standard secure default length for RSA keys is 2048 bits
+    modulusLength: 2048,
+  });
+  const exportedPublicKey = publicKey.export({
+    type: "pkcs1",
+    format: "pem",
+  });
+
+  const exportedPrivateKey = privateKey.export({
+    type: "pkcs1",
+    format: "pem",
+  });
+
+  const user = new User({ username, exportedPrivateKey });
   // do hashing here
   const newUser = user.save();
 
   if (newUser) {
     res.status(200).json({
       message: "User Registered Successfully",
-      publicKey: publicKey,
+      publicKey: exportedPublicKey,
     });
   } else {
     res.status(200).json({ message: "Failed" });
