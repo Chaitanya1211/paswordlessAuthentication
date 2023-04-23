@@ -58,22 +58,12 @@ class _HomepageState extends State<Homepage> {
                           child: ElevatedButton(
                             child: const Text('Login'),
                             onPressed: () async {
-                              //get secret from server
-                              final String uname =
+                              String username =
                                   _username.text.toString().trim();
-                              var secretResult = await api.getSecret(uname);
-                              String secret = secretResult["encryptedData"];
-                              print("Secret received : $secret");
-                              //decrypt the secret
-                              final String privateKey =
-                                  await shared.getPrivateKey();
-                              print("Private key : $privateKey");
-                              final file = File('private.txt');
-                              await file.writeAsString('Hello, world!');
-                              var res =
-                                  await api.verifySecret(uname, privateKey);
-                              String responseGot = res["decrypted"];
-                              print(responseGot);
+                              // encrypt username using publickey from shared prefs
+                              String secret = await key.encryptData(username);
+                              //send the ebcrypted text to server
+                              var res = await api.login(username, secret);
                               //allow user login
                             },
                           )),

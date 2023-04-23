@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:app/helper/sharedPrefs.dart';
@@ -16,31 +17,18 @@ class Keys {
   late String privateKey;
   late String publicKey;
 //Future to hold our KeyPair
-  List<String> generateRSAKeyPair(int bitLength) {
-    // Create a random secure seed
-    final secureRandom = FortunaRandom();
-    final seedSource = Random.secure();
-    final seeds = <int>[];
-    for (var i = 0; i < 32; i++) {
-      seeds.add(seedSource.nextInt(255));
-    }
-    secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
+  encryptData(String username) async {
+    var plainText = username;
+    var helper = RsaKeyHelper();
+    var publicKey = await shared.getPublicKey();
+    // RSAPrivateKey private_converted = helper.parsePrivateKeyFromPem(privateKey);
+    RSAPublicKey publicKeyConverted = helper.parsePublicKeyFromPem(publicKey);
 
-    // Generate RSA key pair
-    final keyGenParams = RSAKeyGeneratorParameters(
-      BigInt.from(65537),
-      bitLength,
-      12,
-    );
-    final keyGenerator = RSAKeyGenerator();
-    keyGenerator.init(ParametersWithRandom(keyGenParams, secureRandom));
-    final keyPair = keyGenerator.generateKeyPair();
-    publicKey = RsaKeyHelper()
-        .encodePublicKeyToPemPKCS1(keyPair.publicKey as RSAPublicKey);
-    privateKey = RsaKeyHelper()
-        .encodePrivateKeyToPemPKCS1(keyPair.privateKey as RSAPrivateKey);
-    // print("Public Key :" + publicKey);
-    // print("Private key :" + privateKey);
-    return [publicKey, privateKey];
+    var encryptedText = encrypt(plainText, publicKeyConverted);
+    // var decryptedText = decrypt(encryptedText, private_converted);
+    var base64Encoded = base64Encode(encryptedText.codeUnits);
+    print(" Encrypted :" + base64Encoded);
+    return base64Encoded;
+    // print(" Decrypted :" + decryptedText);
   }
 }

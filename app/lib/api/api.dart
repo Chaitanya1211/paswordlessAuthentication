@@ -14,37 +14,45 @@ class Api {
     return registerData["message"];
   }
 
-  registerUser(String username, String publicKey) async {
+  registerUser(String username) async {
     Map getapidata = {};
     getapidata['username'] = username;
-    getapidata['publicKey'] = publicKey;
     var registerResult =
         await _performRequest('POST', 'register/new', getapidata);
     // print(registerResult);
     return registerResult;
   }
 
-  getSecret(String username) async {
+  login(String username, String encodedData) async {
     Map getapidata = {};
     getapidata['username'] = username;
-    var secretResult = await _performRequest('GET', 'login/secret', getapidata);
-    return secretResult;
+    getapidata['encryptedData'] = encodedData;
+
+    var result = await _performRequest('GET', 'login', getapidata);
+
+    print(result);
   }
+  // getSecret(String username) async {
+  //   Map getapidata = {};
+  //   getapidata['username'] = username;
+  //   var secretResult = await _performRequest('GET', 'login/secret', getapidata);
+  //   return secretResult;
+  // }
 
-  verifySecret(String username, String privateKey) async {
-    print("Verify secret called");
-    Map getapidata = {};
+  // verifySecret(String username, String privateKey) async {
+  //   print("Verify secret called");
+  //   Map getapidata = {};
 
-    getapidata['username'] = username;
-    getapidata['privateKey'] = privateKey;
+  //   getapidata['username'] = username;
+  //   getapidata['privateKey'] = privateKey;
 
-    var res = await _performRequest('GET', 'login/verify', getapidata);
-    print(res);
-    return res;
-  }
+  //   var res = await _performRequest('GET', 'login/verify', getapidata);
+  //   print(res);
+  //   return res;
+  // }
 
   _performRequest(String reqType, String endUrl, Map getapidata) async {
-    var baseUrl = "http://3.108.66.1/";
+    var baseUrl = "http://43.205.216.163/";
 
     var headers = {'Content-Type': 'application/json'};
 

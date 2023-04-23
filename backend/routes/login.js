@@ -3,32 +3,23 @@ const route = express.Router();
 const User = require("../schemas/userSchema");
 const crypto = require("crypto");
 const NodeRSA = require("node-rsa");
-// route.get("/", (req, res) => {
-//   res.send("Login page");
-// });
-
-route.get("/secret", async (req, res) => {
-  const { username } = req.body;
+route.get("/", async (req, res) => {
+  const { username, encryptedData } = req.body;
   const response = await User.findOne({ username: username });
-  var publicKey = response["publicKey"];
-  console.log(publicKey);
-  var public_key = new NodeRSA(publicKey);
+  var privateKey = response["exportedPrivateKey"];
 
-  var encryptedData = public_key.encrypt(process.env.SECRET_KEY, "base64");
-  res.json({ encryptedData: encryptedData });
-});
+  const decryptedResult = crypto.privateDecrypt(
+    {
+      key: privateKey,
+      // In order to decrypt the data, we need to specify the
+      // same hashing function and padding scheme that we used to
+      // encrypt the data in the previous step
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: "sha256",
+    },
+    Buffer.from(encryptedData, "base64")
+  );
 
-route.get("/verify", (req, res) => {
-  const { secret, privateKey } = req.body;
-  // const decryptedString = crypto.privateDecrypt(
-  //   {
-  //     key: privateKey,
-  //     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-  //     oaepHash: "sha256",
-  //   },
-  //   secret
-  // );
-
-  res.json({ decrypted: "HEllo" });
+  res.json({ result: decryptedResult });
 });
 module.exports = route;

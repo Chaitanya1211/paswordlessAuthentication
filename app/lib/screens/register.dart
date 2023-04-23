@@ -57,16 +57,13 @@ class _RegisterState extends State<Register> {
                         alert.showMyDialog(context, "Username already exixts",
                             "The username already exists. Please try again with different username");
                       } else {
-                        //genrate keys
-                        keys = key.generateRSAKeyPair(2048);
-                        var publicKey = keys[0];
-                        var privateKey = keys[1];
-                        shared.setPrivateKey(privateKey);
-                        shared.setPublicKey(publicKey);
-                        var registerResponse = await apiCall.registerUser(
-                            _username.text.trim().toString(), publicKey);
+                        var registerResponse = await apiCall
+                            .registerUser(_username.text.trim().toString());
                         if (registerResponse["message"] ==
                             "User Registered Successfully") {
+                          shared.setPublicKey(registerResponse["publicKey"]);
+                          String pub = await shared.getPublicKey();
+                          print("Public Key from Shared prefs : $pub");
                           alert.showMyDialog(
                               context,
                               "User Registration Successfull",
